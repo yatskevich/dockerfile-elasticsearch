@@ -1,13 +1,14 @@
 #
 # ElasticSearch Dockerfile
+# Based on dockerfile/elasticsearch
 #
-# https://github.com/dockerfile/elasticsearch
+# https://github.com/yatskevich/dockerfile-elasticsearch
 #
 
 # Pull base image.
 FROM dockerfile/java:oracle-java7
 
-ENV ES_PKG_NAME elasticsearch-1.4.2
+ENV ES_PKG_NAME elasticsearch-1.3.1
 
 # Install ElasticSearch.
 RUN \
@@ -16,6 +17,11 @@ RUN \
   tar xvzf $ES_PKG_NAME.tar.gz && \
   rm -f $ES_PKG_NAME.tar.gz && \
   mv /$ES_PKG_NAME /elasticsearch
+
+# Install HEAD plugin
+RUN \
+  cd /elasticsearch && \
+  bin/plugin -i mobz/elasticsearch-head
 
 # Define mountable directories.
 VOLUME ["/data"]
