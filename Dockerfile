@@ -6,7 +6,17 @@
 #
 
 # Pull base image.
-FROM dockerfile/java:oracle-java7
+FROM ubuntu:14.04.2
+ 
+ENV DEBIAN_FRONTEND noninteractive
+ENV JAVA_HOME /opt/jdk/jre
+ENV PATH $PATH:/opt/jdk/jre/bin
+ 
+RUN apt-get update && apt-get install -y wget
+ 
+RUN wget --no-check-certificate -O /tmp/pkg.tar.gz --header "Cookie: oraclelicense=a" http://download.oracle.com/otn-pub/java/jdk/7u65-b17/jdk-7u65-linux-x64.tar.gz && \
+    tar -zxf /tmp/pkg.tar.gz --xform='s/[^\/]*/jdk/' -C /opt && \
+    rm -rf /tmp/*
 
 ENV ES_PKG_NAME elasticsearch-1.5.2
 
